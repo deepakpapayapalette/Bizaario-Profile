@@ -6,7 +6,7 @@ import ActivePatient from '../components/ActivePatient/ActivePatient'
 const MainContent = () => {
   return (
     <>
-      <main className="app-content px-2pb-5 " >
+      <main className="app-content py-5  " >
        <ActivePatient/>
       </main>
     </>

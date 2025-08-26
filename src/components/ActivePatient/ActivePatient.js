@@ -96,7 +96,7 @@ const ActivePatient = () => {
   };
   return (
     <>
-      <div className="p-6 bg-gray-50 min-h-screen">
+      <div className=" bg-gray-50 min-h-screen">
         <h2 className="text-2xl font-semibold mb-2">
           Enter Details for Active Patients Profile
         </h2>
