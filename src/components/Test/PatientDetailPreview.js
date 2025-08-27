@@ -3,7 +3,7 @@ import userProfile from '../../assets/images/profile-image.png'
 import { MdOutlinePhone } from "react-icons/md";
 import { TfiAngleUp } from "react-icons/tfi";
 
-const PreviewFormData = ({formData}) => {
+const PatientDetailPreview = ({formData}) => {
   return (
     <>
       <div className="bg-white rounded-xl shadow p-4">
@@ -86,9 +86,9 @@ const PreviewFormData = ({formData}) => {
                 </div>
               </div>
             </div>
-          </div>
+        </div>
     </>
   )
 }
 
-export default PreviewFormData
+export default PatientDetailPreview
