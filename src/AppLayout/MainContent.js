@@ -19,7 +19,7 @@ const MainContent = () => {
        <ActivePatient/>
 
        {/* <Test1/> */}
-     <OccupationalProfilePreview/>
+     {/* <OccupationalProfilePreview/> */}
       </main>
     </>
   )
