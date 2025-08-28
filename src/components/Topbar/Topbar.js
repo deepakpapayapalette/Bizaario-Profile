@@ -9,10 +9,8 @@ import notification from "../../assets/images/svg/notification.svg"
 const TopbarHeader = () => {
   return (
 
-    <header className="app-topbar bg-white border-b border-gray-100 flex items-center py-3 px-4 justify-between shadow-md mb-3">
-      <div className='flex justify-between w-full'>
-
-      
+    <header className="app-topbar bg-white border-b border-gray-100 flex items-center py-3 px-[24px] justify-between shadow-md mb-3">
+      <div className='flex justify-between w-full'> 
       <div className="flex items-center gap-3 w-1/3">
         <div className="flex items-center w-full max-w-md rounded-[12px] overflow-hidden  bg-[#f0f1fe]">
           <input
@@ -26,19 +24,20 @@ const TopbarHeader = () => {
         </div>
       </div>
      
-        <div className="flex items-center space-x-6 pe-lg-5">
-        <div className="flex items-center space-x-1     cursor-pointer language-input">
-          <img src={languageIcon} alt="translate" className="w-5 me-2" />
-          <span className="text-sm text-gray-700">English</span>
-          <svg xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+        <div className="flex items-center space-x-10 lg:pe-10">
+          <div className="flex items-center      cursor-pointer language-input">
+            <div className="dropdown ">
+              <button
+                className="btn nav-btn-style dropdown-toggle flex items-center text-[#f86f03]"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img src={languageIcon} alt="" className="me-2" />
+                <span className="text-sm text-gray-700">English</span>
+              </button> 
+            </div> 
+          </div>
         <div className="relative cursor-pointer">
           <img src={notification} alt="" />
           <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full px-1">1</span>
@@ -48,7 +47,7 @@ const TopbarHeader = () => {
           <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full px-1">5</span>
         </div>
         <div className="h-6 border-l border-gray-300"></div>
-        <div className="flex items-center space-x-2 cursor-pointer">
+        <div className="flex items-center space-x-2 cursor-pointer ">
           <img src={user} alt="profile" className="w-8 h-8 rounded-full" />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold text-gray-800">Hello user name</span>

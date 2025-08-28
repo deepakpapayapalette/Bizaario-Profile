@@ -4,7 +4,8 @@ import userProfile from '../../../assets/images/profile-image.png';
 import { MdOutlinePhone } from "react-icons/md";
 
 export default function PatientDetailsPreview({ formData }) {
-  console.log(formData)
+
+
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <h3 className="font-semibold mb-4">Preview</h3>
@@ -30,7 +31,7 @@ export default function PatientDetailsPreview({ formData }) {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-[12px]">
         <div className="rounded-lg border border-gray-200 bg-indigo-50">
           <div className="px-3 pt-2 bg-indigo-50 rounded-t-lg font-medium text-sm">Contact Details</div>
           <div className="px-3 py-2 text-sm">

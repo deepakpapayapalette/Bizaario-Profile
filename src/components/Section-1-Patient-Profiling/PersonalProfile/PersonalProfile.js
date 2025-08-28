@@ -31,7 +31,7 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  console.log(data.ImagesVideo,"ImagesVideo")
+  // console.log(data.ImagesVideo,"ImagesVideo")
 
   return (
     <div className='bg-white p-6 rounded-lg shadow'>
@@ -46,7 +46,7 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
         <TextField label="No. of Stillbirths" name="stillbirths" size="small" value={data.stillbirths} onChange={handleChange} />
         <TextField label="Number of Children" name="children" size="small" value={data.children} onChange={handleChange} />
       </div> 
-      <div className=" mt-3 mb-2 text-sm">
+      <div className=" my-[14px] text-sm space-y-[14px]">
         <div className='flex justify-between'>
           <div className='flex items-center'>
             <FormLabel id="walk-label" sx={{ fontSize: '14px' }}>Walking Impairment?</FormLabel>
@@ -57,21 +57,16 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               aria-labelledby="walk-label"
               onChange={handleChange} 
               name="walkingImpairment"
-              className='inline'
+              className='inline  space-x-4'
               value={data.walkingImpairment}
+
             >
               <FormControlLabel 
                  value="yes" 
                  control={
-                 <Radio sx={{ 
-                        color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} 
-                        />} 
-                        label="Yes" 
-                        
-                      
-                        />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
-
+                 <Radio sx={{ padding:'4px',  color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }  }} />}   label="Yes"   
+                 />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" /> 
             </RadioGroup>
           </FormControl>
         </div>
@@ -86,11 +81,11 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               row
               aria-labelledby="bsa"
               name="bodySensationAbnormality"
-              className='inline'
+              className='inline space-x-4'
               value={data.bodySensationAbnormality}
             >
-              <FormControlLabel value="yes" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
+              <FormControlLabel value="yes" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
             </RadioGroup>
           </FormControl>
         </div>
@@ -104,11 +99,11 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               row
               aria-labelledby="Speech-Impairment"
               name="speechImpairment"
-              className='inline'
+              className='inline  space-x-4'
               value={data.speechImpairment}
             >
-              <FormControlLabel value="yes" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
+              <FormControlLabel value="yes" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
             </RadioGroup>
           </FormControl>
         </div>
@@ -122,11 +117,11 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               row
               aria-labelledby="Body-Shaking"
               name="bodyShaking"
-              className='inline'
+              className='inline  space-x-4'
               value={data.bodyShaking}
             >
-              <FormControlLabel value="yes" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
+              <FormControlLabel value="yes" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
             </RadioGroup>
           </FormControl>
         </div>
@@ -140,11 +135,11 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               row
               aria-labelledby="HairGrowth"
               name="abnormalHairGrowthLoss"
-              className='inline'
+              className='inline  space-x-4'
               value={data.abnormalHairGrowthLoss}
             >
-              <FormControlLabel value="yes" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
+              <FormControlLabel value="yes" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
             </RadioGroup>
           </FormControl>
         </div>
@@ -158,11 +153,11 @@ export default function PersonalProfile({ initialData = {}, onPrevious, onNext }
               row
               aria-labelledby="FacialDeformity"
               name="facialDeformity"
-              className='inline'
+              className='inline  space-x-4' 
               value={data.facialDeformity}
             >
-              <FormControlLabel value="yes" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio sx={{ color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
+              <FormControlLabel value="yes" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio sx={{ padding:'4px', color: "#525fe1", '& .MuiSvgIcon-root': { fontSize: 20, }, }} />} label="No" />
             </RadioGroup>
           </FormControl>
         </div> 

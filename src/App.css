@@ -1,3 +1,12 @@
  .MuiFormControlLabel-label {
       font-size: 14px !important; /* Set your desired font size */
     }
+
+
+    .Pre-existing-diseases-list label:nth-child(3) {
+         grid-column: span 2; 
+
+}
+span.MuiButtonBase-root.MuiRadio-root{
+  padding-left: 0px !important;
+}
