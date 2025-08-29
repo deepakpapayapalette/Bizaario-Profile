@@ -4,27 +4,37 @@ import { TfiAngleUp } from 'react-icons/tfi'
 const Chips = ({ items }) => (
   <div className="flex flex-wrap gap-2">
     {items.map((item) => (
-      <span key={item} className="px-3 py-1 rounded-md bg-indigo-100 text-indigo-800 text-xs">
+      <span key={item} className="px-3 py-1 rounded-md bg-[#525fe1] text-white text-xs">
         {item}
       </span>
     ))}
   </div>
 )
 
-const FileLink = ({ label, file }) => {
-  if (!(file instanceof File)) return (
-    <p className="text-sm"><span className="font-medium">{label} :</span> <span className="text-gray-600">--</span></p>
-  )
-  const href = URL.createObjectURL(file)
+export const FileLink = ({ label, file }) => {
+  const hasDataUrl = !!file?.dataUrl
+  const hasName = !!file?.name
+  if (!hasDataUrl && !hasName) {
+    return <p className=""><span className="text-[12px]">{label} :</span> <span className="text-gray-600">--</span></p>
+  } 
+  const href = hasDataUrl ? file.dataUrl : undefined
+  const text = hasName ? file.name : `View ${label}` 
   return (
-    <p className="text-sm">
-      <span className="font-medium">{label} :</span>{' '}
-      <a className="text-indigo-600 underline" href={href} target="_blank" rel="noreferrer">View {label}</a>
-    </p>
+    <div className="text-sm">
+      <span className="text-[12px]">{label} :</span>{' '}
+      {href ? (
+        <a className="text-indigo-600 text-[12px]" href={href} target="_blank" rel="noreferrer">View Prescription</a>
+      ) : (
+        <span className="text-gray-700">{text}</span>
+      )}
+    </div>
   )
 }
 
+
 const CurrentMedicationsPreview = ({ data }) => {
+
+
   const stored = useMemo(() => {
     try {
       const raw = localStorage.getItem('Current Medications')
@@ -33,6 +43,7 @@ const CurrentMedicationsPreview = ({ data }) => {
   }, [])
 
   const d = data || stored || {}
+  // console.log(d.prescriptionFile);
 
   return (
     <div className="bg-white rounded-xl shadow p-4">
@@ -85,19 +96,35 @@ const CurrentMedicationsPreview = ({ data }) => {
         </div>
 
         <div>
-          <p className="font-medium">Investigation Reports</p>
-          <p className="text-sm"><span className="text-gray-500">Investigation Type :</span> <span className="font-medium">{d.investigationType || '--'}</span></p>
-          <FileLink label="Investigation Report" file={d.investigationReport} />
-        </div>
-
-        <div>
-          <p className="font-medium mb-1">Abnormalities Found</p>
-          {Array.isArray(d.abnormalities) && d.abnormalities.length ? (
-            <Chips items={d.abnormalities} />
+          <p className="text-[12px] pb-3">Investigation Reports</p>
+          {Array.isArray(d.investigations) && d.investigations.length ? (
+            <div className="space-y-2 mt-1">
+              {d.investigations.map((inv, i) => (
+                <div key={i} className='rounded-md border p-2 mb-4'>
+                  <div className="">
+                    <p className="text-sm"><span className="text-gray-500 text-[12px]">Investigation Type :</span> <span className="text-[12px]">{inv?.investigationType || '--'}</span></p>
+                    <FileLink label="Investigation Report" file={inv?.investigationReport} /> 
+                  </div>
+                  <div>
+                    <p className="text-[14px]  mt-3 mb-1 ">Abnormalities Found</p>
+                    {Array.isArray(inv.abnormalities) && inv.abnormalities.length ? (
+                      <Chips items={inv.abnormalities} />
+                    ) : (
+                      <span className="text-gray-500">--</span>
+                    )}
+                  </div>
+                </div> 
+              ))}
+            </div>
           ) : (
-            <span className="text-gray-500">--</span>
+            <>
+              <p className="text-sm"><span className="text-gray-500">Investigation Type :</span> <span className="text-[12px]">{d.investigationType || '--'}</span></p>
+              <FileLink label="Investigation Report" file={d.investigationReport} />
+            </>
           )}
         </div>
+
+    
       </div>
     </div>
   )

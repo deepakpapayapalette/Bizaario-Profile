@@ -35,19 +35,35 @@ export default function PatientProfileForm({ initialData = {}, onNext }) {
  
   });
 
+console.log(formData.referralLetter)
   useEffect(() => {
     setFormData((prev) => ({ ...prev, ...initialData }));
   }, [initialData]);
 
 
 
-  const handleChange = (e) => {
+  const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const handleChange = async (e) => {
     const { name, value, files } = e.target;
-    // console.log(files,"files");
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
+    if (files && files[0]) {
+      const file = files[0];
+      const dataUrl = await fileToDataUrl(file);
+      const serializable = {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        dataUrl,
+      };
+      setFormData((prev) => ({ ...prev, [name]: serializable }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
  const VisuallyHiddenInput = styled('input')({
@@ -242,8 +258,10 @@ export default function PatientProfileForm({ initialData = {}, onNext }) {
               <div className="text-center flex justify-center" >
                 <LuCloudUpload className="text-[#4f4f4f]" size={25} />
               </div>
+              
               <p className="text-sm text-gray-500 mt-2 normal-case"> Drag & Drop Or <span className="text-[#525fe1] font-semibold normal-case">Browse File</span> </p>
               <div className="text-[10px] text-[#808080] mt-2 normal-case"> Upload JPG, Png, Pdf.</div>
+              {formData.referralLetter && <div className="text-gray-500 text-[12px]"> {formData.referralLetter.name}</div>}
             </div>
 
             {/* <input hidden  type="file" name="referralLetter" onChange={handleChange} /> */}
@@ -254,6 +272,7 @@ export default function PatientProfileForm({ initialData = {}, onNext }) {
               onChange={handleChange}
               multiple
             />
+
           </Button>
         </div>
       </div>

@@ -2,10 +2,21 @@ import React from "react";
 import { TfiAngleUp } from "react-icons/tfi";
 import userProfile from '../../../assets/images/profile-image.png';
 import { MdOutlinePhone } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 
-export default function PatientDetailsPreview({ formData }) {
+export default function PatientDetailsPreview({ formData  }) {
+
+   const handleDownload = (url, fileName) => {
+    const link = document.createElement("a");
+    link.href = url;    
+    // window.open(url, "_blank"),
+    link.download = `${fileName}`
+    link.click();
+  };
 
 
+
+    // console.log(formData,"referralLetter")
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <h3 className="font-semibold mb-4">Preview</h3>
@@ -29,8 +40,7 @@ export default function PatientDetailsPreview({ formData }) {
             </div>
           </div>
         </div>
-      </div>
-
+      </div> 
       <div className="space-y-[12px]">
         <div className="rounded-lg border border-gray-200 bg-indigo-50">
           <div className="px-3 pt-2 bg-indigo-50 rounded-t-lg font-medium text-sm">Contact Details</div>
@@ -75,18 +85,24 @@ export default function PatientDetailsPreview({ formData }) {
             <p>Nationality :  <span className="text-[#000000] font-semibold"> {formData.nationality}</span></p>
             <p>Patient Panel :  <span className="text-[#000000] font-semibold"> {formData.patientPanel }</span></p>
             <p>
-              Referral Letter : {formData.referralLetter instanceof File ? (
-                <a
-                  className="text-blue-600 underline font-semibold"
-                  href={URL.createObjectURL(formData.referralLetter)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View Letter
-                </a>
-              ) : (
-                <span className="text-gray-500">--</span>
-              )}
+              Referral Letter : {
+                formData?.referralLetter?.dataUrl ? (
+                  <>
+                    <NavLink className="text-blue-600 underline font-semibold"
+                    // to={formData.referralLetter.dataUrl} 
+                      // target="_blank" 
+                      onClick={() => handleDownload(formData?.referralLetter?.dataUrl, formData.referralLetter.name)}
+                    >View Letter</NavLink>
+                  </>
+                ) : formData?.referralLetter?.name ? (
+                  <>
+                    <span className="text-gray-700">{formData.referralLetter.name}</span> 
+                  </>
+                ) : (
+                  <span className="text-gray-500">--</span> 
+                )
+              }
+
             </p>
           </div>
         </div>

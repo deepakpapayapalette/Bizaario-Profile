@@ -79,7 +79,7 @@ const ActivePatient = () => {
   const [habitsLifestyle, setHabitsLifestyle] = useState({});
   const [occupationalProfile, setOccupationalProfile] = useState({});
 
-console.log(occupationalProfile);
+// console.log(occupationalProfile);
 
   useEffect(() => {
     try {

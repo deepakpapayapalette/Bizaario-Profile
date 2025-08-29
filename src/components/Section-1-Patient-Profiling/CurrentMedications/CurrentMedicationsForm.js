@@ -41,7 +41,6 @@ const MultiSelect = ({ options, values, onToggle, placeholder }) => {
 const FileDrop = ({ label, file, onChange }) => {
   const id = useMemo(() => `file-${Math.random().toString(36).slice(2)}`,[ ])
 
-  
   return (
     <div>
       <p className="text-sm mb-2">{label}</p>
@@ -51,6 +50,7 @@ const FileDrop = ({ label, file, onChange }) => {
           <p className="text-sm text-gray-500">Drag & Drop or <span className="text-indigo-600">Browse File</span></p>
           <p className="text-[12px] text-gray-400">Upload JPG, Png, Pdf.</p>
           {file && <p className="text-[12px] text-gray-700 mt-2">Selected: {file.name}</p>}
+          
         </div>
         <input id={id} type="file" className="hidden" onChange={(e) => onChange(e.target.files?.[0] || null)} />
       </label>
@@ -73,17 +73,29 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
     sideEffects: [],
     investigationType: '',
     investigationReport: null,
+    investigations: [],
     abnormalities: [],
-  })
+  });
+
 
   useEffect(() => {
     const hydrated = { ...form, ...initialData }
+    const nextInvestigations = Array.isArray(hydrated.investigations)
+      ? hydrated.investigations
+      : ((hydrated.investigationType || hydrated.investigationReport)
+          ? [{ investigationType: hydrated.investigationType || '', investigationReport: hydrated.investigationReport || null, abnormalities: [] }]
+          : [])
     setForm({
       ...hydrated,
       medications: hydrated.medications || [],
       therapies: hydrated.therapies || [],
       sideEffects: hydrated.sideEffects || [],
       abnormalities: hydrated.abnormalities || [],
+      investigations: (nextInvestigations.length > 0 ? nextInvestigations : [{ investigationType: '', investigationReport: null, abnormalities: [] }]).map(inv => ({
+        investigationType: inv.investigationType || '',
+        investigationReport: inv.investigationReport || null,
+        abnormalities: Array.isArray(inv.abnormalities) ? inv.abnormalities : [],
+      })),
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData])
@@ -94,9 +106,74 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
     } catch (_) {}
   }
 
+  const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
   const setField = (key, value) => {
     setForm((prev) => {
       const next = { ...prev, [key]: value }
+      persist(next)
+      return next
+    })
+  }
+
+  const setFileField = async (key, file) => {
+    if (!file) {
+      setField(key, null)
+      return
+    }
+    const dataUrl = await fileToDataUrl(file)
+    const serializable = { name: file.name, size: file.size, type: file.type, dataUrl }
+    setField(key, serializable)
+  }
+
+  const addInvestigation = () => {
+    setForm((prev) => {
+      const next = { ...prev, investigations: [...(prev.investigations || []), { investigationType: '', investigationReport: null }] }
+      persist(next)
+      return next
+    })
+  }
+
+  const setInvestigationField = (index, key, value) => {
+    setForm((prev) => {
+      const list = [...(prev.investigations || [])]
+      list[index] = { ...list[index], [key]: value }
+      const next = { ...prev, investigations: list }
+      persist(next)
+      return next
+    })
+  }
+
+  const setInvestigationFileField = async (index, file) => {
+    if (!file) {
+      setInvestigationField(index, 'investigationReport', null)
+      return
+    }
+    const dataUrl = await fileToDataUrl(file)
+    const serializable = { name: file.name, size: file.size, type: file.type, dataUrl }
+    setInvestigationField(index, 'investigationReport', serializable)
+  }
+
+  const toggleInvestigationAbnormality = (index, value, checked) => {
+    setForm((prev) => {
+      const list = [...(prev.investigations || [])]
+      const current = list[index] || { abnormalities: [] }
+      const exists = (current.abnormalities || []).includes(value)
+      let updated
+      if (checked === true) {
+        updated = exists ? current.abnormalities : [...current.abnormalities, value]
+      } else if (checked === false) {
+        updated = (current.abnormalities || []).filter((v) => v !== value)
+      } else {
+        updated = exists ? (current.abnormalities || []).filter((v) => v !== value) : [...(current.abnormalities || []), value]
+      }
+      list[index] = { ...current, abnormalities: updated }
+      const next = { ...prev, investigations: list }
       persist(next)
       return next
     })
@@ -140,6 +217,7 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
 
   return (
     <div className="bg-white rounded-xl shadow p-6 max-w-lg">
+
       <h2 className="text-lg font-semibold text-gray-800 mb-3">Current Medications</h2>
 
       <div className="space-y-4">
@@ -157,7 +235,7 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
           </select>
         </div>
 
-        <FileDrop label="Upload Prescription" file={form.prescriptionFile} onChange={(file) => setField('prescriptionFile', file)} />
+        <FileDrop label="Upload Prescription" file={form.prescriptionFile} onChange={(file) => setFileField('prescriptionFile', file)} />
 
         <div>
           <MultiSelect options={medicationOptions} values={form.medications} onToggle={(v, c) => toggleFrom('medications', v, c)} placeholder="Select Medications" />
@@ -172,7 +250,7 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
 
         <div className="flex items-center gap-4">
           <span className="text-sm">Drug Response :</span>
-          {['Good','Average','Poor'].map(r => (
+          {['Good', 'Average', 'Poor'].map(r => (
             <label key={r} className="flex items-center gap-2 text-sm">
               <input type="radio" name="drugResponse" checked={form.drugResponse === r} onChange={() => setField('drugResponse', r)} /> {r}
             </label>
@@ -182,29 +260,37 @@ const CurrentMedicationsForm = ({ initialData = {}, onPrevious, onNext }) => {
         <div>
           <select value={form.ageingYears} onChange={(e) => setField('ageingYears', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm">
             <option value="">Ageing of current medication (years)</option>
-            {Array.from({length: 21}).map((_,i) => <option key={i} value={i}>{i}</option>)}
+            {Array.from({ length: 21 }).map((_, i) => <option key={i} value={i}>{i}</option>)}
           </select>
         </div>
 
         <textarea value={form.patientFeedback} onChange={(e) => setField('patientFeedback', e.target.value)} placeholder="Patient's feedback" className="w-full px-3 py-2 border rounded-lg text-sm" />
-
         <MultiSelect options={sideEffectOptions} values={form.sideEffects} onToggle={(v, c) => toggleFrom('sideEffects', v, c)} placeholder="Any side effect" />
 
         <div>
-          <select value={form.investigationType} onChange={(e) => setField('investigationType', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm">
-            <option value="">Investigation Type</option>
-            {investigationTypes.map(o => <option key={o} value={o}>{o}</option>)}
-          </select>
+          <div className="investigation-card-header">
+            <h3 className='pb-2 font-semibold text-sm'>Investigation Reports</h3>
+          </div>
+
+          <div className="space-y-3">
+            {(form.investigations || []).map((inv, idx) => (
+              <div key={idx} className="rounded-md border p-3">
+                <div className='pb-2'>
+                  <select value={inv.investigationType} onChange={(e) => setInvestigationField(idx, 'investigationType', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm">
+                    <option value="">Investigation Type</option>
+                    {investigationTypes.map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                </div>
+                <FileDrop label="Upload Investigation Report" file={inv.investigationReport} onChange={(file) => setInvestigationFileField(idx, file)} />
+                <div className="pt-4 Abnormalities-Found">
+                  <p className="text-sm font-medium mb-2">Abnormalities Found</p>
+                  <MultiSelect options={abnormalityOptions} values={inv.abnormalities || []} onToggle={(v, c) => toggleInvestigationAbnormality(idx, v, c)} placeholder="Select Abnormalities" />
+                </div>
+              </div>
+            ))}
+            <button type="button" onClick={addInvestigation} className="text-indigo-600 text-sm">+ Add More Investigation</button>
+          </div>
         </div>
-
-        <FileDrop label="Upload Investigation Report" file={form.investigationReport} onChange={(file) => setField('investigationReport', file)} />
-
-        <div>
-          <p className="text-sm font-medium mb-2">Abnormalities Found</p>
-          <MultiSelect options={abnormalityOptions} values={form.abnormalities} onToggle={(v, c) => toggleFrom('abnormalities', v, c)} placeholder="Select Abnormalities" />
-        </div>
-
-        <button type="button" className="text-indigo-600 text-sm">+ Add More Investigation</button>
 
         <div className="flex justify-between pt-2">
           <button type="button" onClick={handlePrevious} className="px-5 py-2 rounded-lg border border-orange-500 text-orange-500 hover:bg-orange-50">Previous</button>

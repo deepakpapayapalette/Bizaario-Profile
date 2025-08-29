@@ -2,7 +2,8 @@ import '../App.css'
 import '../assets/css/home.css'
 import ActivePatient from '../components/ActivePatient/ActivePatient'
 import OccupationalProfilePreview from '../components/Section-1-Patient-Profiling/OccupationalProfile/OccupationalProfilePreview'
-import Test1 from '../components/Test/Test1'
+import ImageUploader from '../components/Test/ImageUploader'
+import Test1 from '../components/Test/ImageUploader'
 // import AllDataTest from '../components/Test/AllDataTest'
 // import AllergiesDeficienciesForm from '../components/Section-1-Patient-Profiling/AllergiesDeficiencies/AllergiesDeficienciesForm'
 // import AllergiesDeficienciesPreview from '../components/Section-1-Patient-Profiling/AllergiesDeficiencies/AllergiesDeficienciesPreview'
@@ -20,6 +21,7 @@ const MainContent = () => {
 
        {/* <Test1/> */}
      {/* <OccupationalProfilePreview/> */}
+     {/* <ImageUploader/> */}
       </main>
     </>
   )
