@@ -16,7 +16,7 @@ export default function PatientDetailsPreview({ formData  }) {
 
 
 
-    // console.log(formData,"referralLetter")
+    console.log(formData?.profilePicture,"referralLetter")
   return (
     <div className="bg-white rounded-xl shadow p-4">
       <h3 className="font-semibold mb-4">Preview</h3>
@@ -26,7 +26,7 @@ export default function PatientDetailsPreview({ formData  }) {
       </div>
       <div className="flex items-center gap-3 mb-4">
         <div>
-          <img src={userProfile} alt="Patient" className="w-16 h-16 rounded-full object-cover" />
+          <img src={formData?.profilePicture?.dataUrl || userProfile} alt="Patient" className="w-16 h-16 rounded-full object-cover" />
 
         </div>
         

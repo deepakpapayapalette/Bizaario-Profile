@@ -73,7 +73,7 @@ const AllergiesDeficienciesForm = ({ initialData = { allergies: [], deficiencies
 
         <div className="mb-5">
           <h3 className="text-gray-700 font-medium mb-2">Allergies</h3>
-          <div className="grid grid-cols-2 gap-2 space-y-3">
+          <div className="grid grid-cols-2 space-y-3">
             {allergyOptions.map((item) => (
               <label
                 key={item}
@@ -94,7 +94,7 @@ const AllergiesDeficienciesForm = ({ initialData = { allergies: [], deficiencies
         {/* Deficiencies Section */}
         <div className="mb-5">
           <h3 className="text-gray-700 font-medium mb-2">Deficiencies</h3>
-          <div className="grid grid-cols-2 gap-2 space-y-3">
+          <div className="grid grid-cols-2  space-y-3">
             {deficiencyOptions.map((item) => (
               <label
                 key={item}

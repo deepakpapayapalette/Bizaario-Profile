@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Box, Tooltip, IconButton, Avatar } from '@mui/material';
 import { LuCloudUpload } from "react-icons/lu";
 import userProfile from '../../../assets/images/profile-image.png';
@@ -7,10 +7,7 @@ import { EditIcon } from "lucide-react";
 import { styled } from '@mui/material/styles';
 
 export default function PatientProfileForm({ initialData = {}, onNext }) {
-    // const [selectedIndiaState, setSelectedIndiaState] = useState("");
-
-  
-
+    
   const [formData, setFormData] = useState({
     name: "",
     dob: "",
@@ -32,15 +29,16 @@ export default function PatientProfileForm({ initialData = {}, onNext }) {
     zipCode: "",
     address: "",
     referralLetter: null,
+    profilePicture: null,
  
   });
 
-console.log(formData.referralLetter)
+
+  const inputRef= useRef(null); 
+
   useEffect(() => {
     setFormData((prev) => ({ ...prev, ...initialData }));
-  }, [initialData]);
-
-
+  }, [initialData]); 
 
   const fileToDataUrl = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -59,7 +57,7 @@ console.log(formData.referralLetter)
         size: file.size,
         type: file.type,
         dataUrl,
-      };
+      }; 
       setFormData((prev) => ({ ...prev, [name]: serializable }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -87,7 +85,8 @@ console.log(formData.referralLetter)
 
         <Box sx={{ position: 'relative', display: 'inline-block', minWidth: 100, height: 100, marginLeft: "" }}>
           <Avatar
-            src={userProfile}
+            src={
+              formData?.profilePicture?.dataUrl ||  ""}
             sx={{
               width: 100,
               height: 100,
@@ -98,10 +97,11 @@ console.log(formData.referralLetter)
 
           <input
             type="file"
-            accept="image/*"
-            // ref={inputRef}
+            accept="image/*" 
             onChange={handleChange}
             style={{ display: 'none' }}
+            ref={inputRef}
+            name="profilePicture"
           />
 
           <Tooltip title="Edit profile picture">
@@ -119,7 +119,7 @@ console.log(formData.referralLetter)
                   bgcolor: '#f0f0f0',
                 },
               }}
-            // onClick={() => inputRef.current.click()}
+            onClick={() => inputRef.current.click()}
             >
               <EditIcon fontSize="small" />
             </IconButton>
@@ -257,8 +257,7 @@ console.log(formData.referralLetter)
             <div >
               <div className="text-center flex justify-center" >
                 <LuCloudUpload className="text-[#4f4f4f]" size={25} />
-              </div>
-              
+              </div> 
               <p className="text-sm text-gray-500 mt-2 normal-case"> Drag & Drop Or <span className="text-[#525fe1] font-semibold normal-case">Browse File</span> </p>
               <div className="text-[10px] text-[#808080] mt-2 normal-case"> Upload JPG, Png, Pdf.</div>
               {formData.referralLetter && <div className="text-gray-500 text-[12px]"> {formData.referralLetter.name}</div>}

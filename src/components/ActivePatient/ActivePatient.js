@@ -419,25 +419,15 @@ for (let i = 0; i < localStorage.length; i++) {
     //   );
     // }
 
-    return (
-      <div className="bg-white rounded-xl shadow p-4">
-        <h3 className="font-semibold mb-4">Preview</h3>
-        <p className="text-gray-500">No data entered yet. Start filling out the forms to see previews here.</p>
-
-        
-      </div>
-    );
-
-  };
- 
-
-
-
-
-
+      return (
+        <div className="bg-white rounded-xl shadow p-4">
+          <h3 className="font-semibold mb-4">Preview</h3>
+          <p className="text-gray-500">No data entered yet. Start filling out the forms to see previews here.</p> 
+        </div>
+      ); 
+    }; 
   return (
-    <>
-
+    <> 
       <div className=" bg-gray-50 min-h-screen">
         <h2 className="text-2xl font-semibold mb-2">
           Enter Details for Active Patients Profile
@@ -445,11 +435,10 @@ for (let i = 0; i < localStorage.length; i++) {
         <p className="text-gray-600 mb-6">
           Add or update the required details for the active patient's profile to
           keep records accurate and complete.
-        </p>
-
-        <div className="grid grid-cols-12 gap-4">
+        </p> 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Left Navigation */}
-          <div className="bg-white rounded-xl shadow p-4 col-span-4">
+          <div className="bg-white rounded-xl shadow p-4 ">
             <h2 className="font-medium mb-2">Section 1 Patient's Profiling</h2>
             <div className="flex flex-wrap gap-4">
               {tabItem.map((item) => (
@@ -468,12 +457,12 @@ for (let i = 0; i < localStorage.length; i++) {
           </div>
 
           {/* Middle Content - Forms */}
-          <div className="col-span-4 ">
+          <div className="">
             {renderContent()}
           </div>
 
           {/* Right Preview - Always Visible */}
-          <div className="col-span-4">
+          <div className="">
             {renderPreview()}
           </div>
         </div>
