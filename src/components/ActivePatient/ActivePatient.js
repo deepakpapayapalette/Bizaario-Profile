@@ -438,24 +438,25 @@ for (let i = 0; i < localStorage.length; i++) {
         </p> 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Left Navigation */}
-          <div className="bg-white rounded-xl shadow p-4 ">
-            <h2 className="font-medium mb-2">Section 1 Patient's Profiling</h2>
-            <div className="flex flex-wrap gap-4">
-              {tabItem.map((item) => (
-                <button key={item.id}
-                   className={`px-[10px] py-[7px] text-[14px] font-semibold border rounded-[4px] hover:text-white hover:bg-[#525fe1] border-[#525fe1] ${
-                     isFormFilled(item.tab) 
-                       ? 'bg-[#525fe1] text-white' 
-                       : 'text-[#525fe1]'
-                   }`}
-                  onClick={() => setActiveTab(item.tab)}
-                  >
-                  {item.tab}
-                </button>
-              ))}
+          <div> 
+            <div className="bg-white rounded-xl shadow p-4 ">
+              <h2 className="font-medium mb-2">Section 1 Patient's Profiling</h2>
+              <div className="flex flex-wrap gap-4">
+                {tabItem.map((item) => (
+                  <button key={item.id}
+                    className={`px-[10px] py-[7px] text-[14px] font-semibold border rounded-[4px] hover:text-white hover:bg-[#525fe1] border-[#525fe1] ${
+                      isFormFilled(item.tab) 
+                        ? 'bg-[#525fe1] text-white' 
+                        : 'text-[#525fe1]'
+                    }`}
+                    onClick={() => setActiveTab(item.tab)}
+                    >
+                    {item.tab}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-
           {/* Middle Content - Forms */}
           <div className="">
             {renderContent()}
